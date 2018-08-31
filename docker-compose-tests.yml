@@ -1,0 +1,23 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: test.Dockerfile
+    links:
+      - postgres
+      - redis
+    environment:
+      - RACK_ENV=test
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://postgres:suppa-duppa@postgres:5432/app_test
+      - REDIS_URL=redis://redis:6379
+    env_file:
+      - .env.docker
+  postgres:
+    image: "postgres:10-alpine"
+    environment:
+      POSTGRES_PASSWORD: suppa-duppa
+  redis:
+    image: redis:4-alpine
+    command: redis-server --appendonly yes

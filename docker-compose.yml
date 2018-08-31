@@ -1,0 +1,55 @@
+version: '3'
+volumes:
+  postgres-data:
+    driver: local
+  app-gems:
+    driver: local
+  node-modules:
+    driver: local
+  redis-data:
+    driver: local
+  tmp-data:
+    driver: local
+services:
+  base: &app_base
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    links:
+      - postgres
+      - redis
+    env_file:
+      - .env.docker
+    volumes:
+      - .:/app
+      - app-gems:/usr/local/bundle
+      - node-modules:/app/node_modules
+    stdin_open: true
+    tty: true
+  app:
+    <<: *app_base
+    environment:
+      - RACK_ENV=development
+      - DATABASE_URL=postgres://postgres:suppa-duppa@postgres:5432/development_database
+      - REDIS_URL=redis://redis:6379
+    command: foreman start -f Procfile.dev
+    #mem_limit: 500m
+    #memswap_limit: 0
+  tests:
+    <<: *app_base
+    environment:
+      - RACK_ENV=test
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://postgres:suppa-duppa@postgres:5432/test_database
+      - REDIS_URL=redis://redis:6379
+    env_file:
+      - .env.docker
+  postgres:
+    image: "postgres:10.2-alpine"
+    environment:
+      POSTGRES_PASSWORD: suppa-duppa
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  redis:
+    image: redis:4-alpine
+    command: redis-server --appendonly yes
