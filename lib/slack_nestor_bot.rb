@@ -10,5 +10,9 @@ class SlackNestorBot < SlackRubyBot::Bot
     command 'create room <room>' do
       desc 'Create new Room and assign that chat'
     end
+
+    command 'account link <email>' do
+      desc 'Link chat account to yout system account'
+    end
   end
 end
