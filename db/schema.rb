@@ -31,9 +31,10 @@ ActiveRecord::Schema.define(version: 2018_09_01_000809) do
   end
 
   create_table "messengers", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.integer "user_id"
     t.string "service", null: false
-    t.string "account", null: false
+    t.string "service_id", null: false
+    t.jsonb "data", default: {}, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
