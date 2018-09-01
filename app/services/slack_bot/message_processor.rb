@@ -2,15 +2,18 @@ module SlackBot
   class MessageProcessor
 
     def call(client, data)
-      puts "call message processor"
+      puts "call message processor #{data}"
       return if data['subtype'] == 'bot_message'
-      return if message_to_self?(client, data)
-      return if private_channel?(client, data)
+      return if message_hidden?(data)
       chat = create_chat(client, data)
-      case data["subtype"]
-      when "group_join", "channel_join"
+      case data.subtype
+      when ["group_join", "channel_join"]
         collect_users(client, data)
+      when ["group_leave", "message_changed"]
+        # do nothing for now
       else
+        return if private_channel?(client, data)
+        return if message_to_self?(client, data)
         user = collect_user(client, data.user)
         ::Message.create!(sender_id: user.id, room_id: chat.id, body: data.text, created_at: ::Time.at(data.ts.to_f))
       end
@@ -19,12 +22,22 @@ module SlackBot
     private
 
     def message_to_self?(client, data)
-      client.self && client.self.id == data.user
+      res = client.self && client.self.id == data.user
+      pp "Message to self" if res
+      res
+    end
+
+    def message_hidden?(data)
+      data.hidden
     end
 
     def private_channel?(client, data)
       r = client.web_client.conversations_info channel: data.channel
-      r.channel.is_private
+      res = r.channel.is_private
+      if res
+        pp "Private channel #{r.channel}" 
+      end
+      res
     rescue Slack::Web::Api::Errors::SlackError
       false
     end
@@ -36,7 +49,12 @@ module SlackBot
     end
 
     def collect_users(client, data)
-      users = client.web_client.channels_info(channel: data.channel).channel.members
+      r = client.web_client.conversations_info channel: data.channel
+      users = if r.channel.is_group
+        client.web_client.groups_info(channel: data.channel).group.members
+      else
+        client.web_client.channels_info(channel: data.channel).channel.members
+      end
       users.each do |user_id|
         user_messenger = collect_user(client, user_id)
         next unless user_messenger
