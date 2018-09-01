@@ -15,6 +15,8 @@ gem 'eventmachine'
 gem 'celluloid-io'
 gem 'slack-ruby-bot'
 
+gem 'telegram-bot-ruby'
+
 group :development, :test do
   gem 'puma'
   gem 'pry-rails'
