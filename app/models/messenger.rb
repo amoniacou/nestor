@@ -1,0 +1,2 @@
+class Messenger < ApplicationRecord
+end

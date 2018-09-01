@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+cd /home/app/webapp && bundle exec rake daemon:slack

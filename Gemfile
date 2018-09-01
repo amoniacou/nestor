@@ -9,6 +9,12 @@ gem 'actioncable', '~> 5.2.0'
 gem 'anycable-rails', group: [:production, :development]
 gem 'bcrypt', '~> 3.1.7'
 gem 'devise', '~> 4.4'
+
+# Slack
+gem 'eventmachine'
+gem 'celluloid-io'
+gem 'slack-ruby-bot'
+
 group :development, :test do
   gem 'puma'
   gem 'pry-rails'
