@@ -1,10 +1,8 @@
 <template lang="pug">
-v-app
-  app-header
-  v-content
-    router-view
-  v-footer(white)
-    span.black--text &nbsp; Nestor the Chronicler 2018
+  v-app
+    app-header
+    v-content
+      router-view
 </template>
 
 <script>
@@ -16,5 +14,5 @@ v-app
   };
 </script>
 <style lang="scss">
-    $mdi-font-path: "~mdi/fonts/";
+  $mdi-font-path: "~mdi/fonts/";
 </style>
