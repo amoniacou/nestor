@@ -1,24 +1,32 @@
-# README
+# Nestor the chronicler
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+An application for helping teams have a one point of all chat histories from different chat applications.
+There are many cases when internally team chats in Slack, but with client in Skype and there are many situations when info was in different chats. 
 
-Things you may want to cover:
+## Setup
 
-* Ruby version
+```sh
+docker-compose build
+docker-compose run app bundle install
+docker-compose run app bundle exec rake db:create db:migrate db:seed
+docker-compose run app bundle exec yarn install
+```
 
-* System dependencies
+## Local run
 
-* Configuration
+```sh
+docker-compose run -p 3000:3000 -p 3035:3035 app
+```
 
-* Database creation
+## Local tests
 
-* Database initialization
+### DB Setup
 
-* How to run the test suite
+```sh
+docker-compose run tests rake db:create db:migrate
+```
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### Run
+```sh
+docker-compose run tests rake
+```
