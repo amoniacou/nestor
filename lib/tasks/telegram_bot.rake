@@ -8,7 +8,8 @@ namespace :daemon do
 
     Telegram::Bot::Client.run(token) do |bot|
       bot.listen do |message|
-        ::Telegram::MessageProcessor.new(bot, message)
+        processor = ::Telegram::MessageProcessor.new(bot, message)
+        processor.call
       end
     end
   end
