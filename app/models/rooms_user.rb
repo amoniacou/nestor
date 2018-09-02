@@ -1,0 +1,2 @@
+class RoomsUser < ApplicationRecord
+end
