@@ -1,5 +1,6 @@
 module ::Api::V1
   class RoomsController < ::ActionController::API
+  	before_action :authenticate_user!
 
     def services
       room = ::Room.where(id: params[:id]).first

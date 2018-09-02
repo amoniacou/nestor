@@ -1,5 +1,6 @@
 module ::Api::V1
   class MessagesController < ::ActionController::API
+    before_action :authenticate_user!
     # before_action :choose_groups_chats
 
     def index

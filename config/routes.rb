@@ -9,4 +9,5 @@ Rails.application.routes.draw do
       get '/rooms/:id/services', to: 'rooms#services'
     end
   end
+  root to: 'home#index'
 end
