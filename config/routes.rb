@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       resources :messages
       get '/room_messages', to: 'messages#room_messages'
       get '/global_messages', to: 'messages#global_messages'
+      get '/rooms/:id/services', to: 'rooms#services'
     end
   end
 end
