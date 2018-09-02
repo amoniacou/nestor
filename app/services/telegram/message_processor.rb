@@ -18,27 +18,25 @@ module Telegram
                                text: "[assign_to_room, create_room, account_link]"
         when 'create_room'
           room = Room.find_or_create_by name: attribute
-          user_id = @message.from.id
-          @bot.api.sendMessage chat_id: user_id,
+          #user_id = @message.from.id
+          @bot.api.sendMessage chat_id: chat_id,
                                text: "#{room.inspect}"
         when 'assign_to_room'
           room = Room.find_or_create_by name: attribute
-          user_id = @message.from.id
+          #user_id = @message.from.id
           groups_chat = GroupsChat.find_or_create_by service: 'telegram',
                                                      service_id: chat_id
 
           groups_chat.update! room_id: room.id
-          @bot.api.sendMessage chat_id: user_id,
+          @bot.api.sendMessage chat_id: chat_id,
                                text: "#{groups_chat.inspect}"
         when 'room_list'
-          user_id = @message.from.id
-          @bot.api.sendMessage chat_id: user_id,
+          #user_id = @message.from.id
+          @bot.api.sendMessage chat_id: chat_id,
                                text: Room.all.to_json
         end
       else
-        message = create_message
-        @bot.api.sendMessage chat_id: chat_id,
-                             text: message.id
+        create_message
       end
     end
 
@@ -54,6 +52,7 @@ module Telegram
       #user = User.find(messenger.user_id)
       user = User.first
       groups_chat = create_groups_chat
+      groups_chat.room_id = 1
 
       ::Message.create! sender_id: user.id,
                         room_id:   groups_chat.room_id,
