@@ -9,29 +9,28 @@ module Telegram
       chat    = create_groups_chat
       text    = @message.text
       chat_id = @message.chat.id
+      bot_name = "@#{ENV['BOT_NAME']}"
 
-      if text =~ /@AmoniacHistoryBot/
-        command, attribute = text.gsub('@AmoniacHistoryBot ','').split(' ')
+      if text =~ /#{bot_name}/
+        command, attribute = text.gsub("#{bot_name}",'').split(' ')
         case command
         when 'help'
           @bot.api.sendMessage chat_id: chat_id,
-                               text: "[assign_to_room, create_room, account_link]"
+                               text: "[assign_to_room, create_room, room_list, account_link]"
         when 'create_room'
           room = Room.find_or_create_by name: attribute
-          #user_id = @message.from.id
           @bot.api.sendMessage chat_id: chat_id,
                                text: "#{room.inspect}"
         when 'assign_to_room'
           room = Room.find_or_create_by name: attribute
-          #user_id = @message.from.id
           groups_chat = GroupsChat.find_or_create_by service: 'telegram',
-                                                     service_id: chat_id
+                                                     service_id: chat_id,
+                                                     room_id: room.id
 
           groups_chat.update! room_id: room.id
           @bot.api.sendMessage chat_id: chat_id,
                                text: "#{groups_chat.inspect}"
         when 'room_list'
-          #user_id = @message.from.id
           @bot.api.sendMessage chat_id: chat_id,
                                text: Room.all.to_json
         end
