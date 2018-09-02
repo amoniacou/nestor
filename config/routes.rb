@@ -6,4 +6,7 @@ Rails.application.routes.draw do
       resources :messages
     end
   end
+
+  root to: 'home#show'
+  match '/*page', to: 'home#show', via: :get
 end
