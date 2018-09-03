@@ -2,7 +2,12 @@
   "dependencies": {
     "@rails/webpacker": "3.5",
     "axios": "^0.18.0",
+    "pg": "^7.4.3",
+    "pg-native": "^3.0.0",
     "pug": "^2.0.3",
+    "sequelize": "^4.38.0",
+    "skype-http": "^0.0.15",
+    "skyweb": "^0.4.3",
     "vuetify": "^1.2.1"
   },
   "devDependencies": {

@@ -14,7 +14,7 @@ gem 'devise', '~> 4.4'
 gem 'eventmachine'
 gem 'celluloid-io'
 gem 'slack-ruby-bot'
-
+# Telegram
 gem 'telegram-bot-ruby'
 
 group :development, :test do

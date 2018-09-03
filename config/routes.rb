@@ -6,4 +6,5 @@ Rails.application.routes.draw do
       resources :messages
     end
   end
+  match '/bots/microsoft' => 'botframework#message', via: [:get, :post, :options]
 end
